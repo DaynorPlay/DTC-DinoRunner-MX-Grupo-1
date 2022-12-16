@@ -1,7 +1,8 @@
 from dino_runner.utils.constants import JUMPING, RUNNING, DEFAULT_TYPE, DUCKING
 import pygame
+from pygame.sprite import Sprite
 
-class Dinosaur:
+class Dinosaur(Sprite):
     X_POS = 80
     Y_POS = 310
     JUMP_VEL = 8.5
@@ -65,6 +66,7 @@ class Dinosaur:
             self.dino_rect.y -= self.jump_vel*4
             self.jump_vel -= 0.8
         if self.jump_vel < -self.JUMP_VEL:
+            self.dino_rect.y = self.Y_POS
             self.dino_jump = False
             self.jump_vel = self.JUMP_VEL
 
