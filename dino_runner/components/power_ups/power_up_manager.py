@@ -18,13 +18,16 @@ class PowerUpManager:
                     if game.player_heart_manager.heart_count<5: game.player_heart_manager.increases_heart()
                 else:
                     powerup.start_time = pygame.time.get_ticks()
-                    if powerup.type == "shield": player.shield = True
+                    if powerup.type == "shield" and player.shield==False:
+                        player.shield = True
+                        game.sound_game.stop()
+                        player.sound_star.play()
                     elif powerup.type == "hammer": player.hammer = True
                     elif powerup.type == "velocity":
                         player.velocity = True
                         if player.poison: player.poison = False
                     if player.velocity: player.type = "default"
-                    else: player.type = powerup.type #cambia el____________________________________________
+                    else: player.type = powerup.type
                     powerup.start_time = pygame.time.get_ticks()
                     if player.shield: player.shield_time_up = powerup.start_time + (random.randint(5,8)*1000)
                     elif player.hammer: player.hammer_time_up = powerup.start_time + (random.randint(5,8)*1000)
@@ -40,9 +43,8 @@ class PowerUpManager:
         if len(self.power_ups)==0:
             if self.when_appers==points:
                 self.when_appers = random.randint(self.when_appers + 150, self.when_appers + 500)
-                type_power_up = random.randint(0,4)
-                if type_power_up==5: self.power_ups.append(Shield())
-                elif type_power_up==1:  self.power_ups.append(Hammer())
-                elif type_power_up==2: self.power_ups.append(Life())
+                type_power_up = random.randint(0,50)
+                if 0<=type_power_up<=10 or type_power_up==0: self.power_ups.append(Shield())
+                elif 11<=type_power_up<=20:  self.power_ups.append(Hammer())
+                elif 21<=type_power_up<=40: self.power_ups.append(Life())
                 else: self.power_ups.append(Velocity())
-#---------------------------------------------

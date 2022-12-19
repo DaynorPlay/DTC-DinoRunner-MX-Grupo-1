@@ -1,4 +1,4 @@
-from dino_runner.utils.constants import JUMPING, RUNNING, DEFAULT_TYPE, DUCKING,SHIELD_TYPE,VELOCITY_TYPE, RUNNING_SHIELD, JUMPING_SHIELD, DUCKING_SHIELD,HAMMER_TYPE,RUNNING_HAMMER, JUMPING_HAMMER,DUCKING_HAMMER
+from dino_runner.utils.constants import JUMPING, RUNNING, DEFAULT_TYPE, DUCKING,SHIELD_TYPE,VELOCITY_TYPE, RUNNING_SHIELD, JUMPING_SHIELD, DUCKING_SHIELD,HAMMER_TYPE,RUNNING_HAMMER, JUMPING_HAMMER,DUCKING_HAMMER,SOUND_JUMP, SOUND_STAR
 import pygame
 from pygame.sprite import Sprite
 
@@ -35,7 +35,8 @@ class Dinosaur(Sprite):
         self.pill = False
         self.has_powerup = False
         self.has_live = True
-    
+        self.sound_jump = SOUND_JUMP
+        self.sound_star = SOUND_STAR
     def update(self, user_input):
         if self.dino_jump:
             self.jump()
@@ -44,10 +45,12 @@ class Dinosaur(Sprite):
         if self.dino_duck:
             self.duck()
         if user_input[pygame.K_DOWN] and not self.dino_jump: 
+
             self.dino_run = False
             self.dino_jump = False
             self.dino_duck = True
         elif user_input[pygame.K_UP] and not self.dino_jump:
+            self.sound_jump.play()
             self.dino_run = False
             self.dino_jump = True
             self.dino_duck = False
@@ -91,7 +94,7 @@ class Dinosaur(Sprite):
         self.dino_rect.y = self.Y_POS_DUCK
         self.step_index +=1
 
-    def check_visibility(self, screen):
+    def check_visibility(self, screen,game):
         if self.shield and not(self.hammer):
             time_to_show = round((self.shield_time_up - pygame.time.get_ticks())/1000, 2)
             if time_to_show >= 0:
@@ -99,9 +102,11 @@ class Dinosaur(Sprite):
                 text = font.render(f'Shield enable for {time_to_show}',True,(0,0,0))
                 text_rect = text.get_rect()
                 text_rect.center=(500,40)
-                pygame.draw.rect(self.screen,(255,255,255),text_rect)
+                pygame.draw.rect(screen,(249,223,195),(text_rect.x-20, text_rect.y-13,262,40))
                 screen.blit(text, text_rect)
             else:
+                self.sound_star.stop()
+                game.sound_game.play()
                 self.shield = False
                 if self.type == SHIELD_TYPE:
                     self.type = DEFAULT_TYPE

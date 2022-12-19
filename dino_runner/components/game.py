@@ -3,7 +3,7 @@ from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
-from dino_runner.utils.constants import BG,BG_MENU ,ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, PLAY_RECT, OPCION_RECT, QUIT_RECT
+from dino_runner.utils.constants import BG,BG_MENU ,ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, PLAY_RECT, OPCION_RECT, QUIT_RECT,SOUND_MENU,SOUND_GAME,SOUND_GAME_OVER
 from dino_runner.components import text_utils
 from dino_runner.utils.scores_manager import ScoresManager
 from dino_runner.utils.button import Button
@@ -12,6 +12,7 @@ class Game:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
+        pygame.mixer.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.playing = False
@@ -27,15 +28,18 @@ class Game:
         self.running = True
         self.speed_buildup = 0
         self.scores_manager = ScoresManager()
+        self.sound_menu = SOUND_MENU
+        self.sound_game = SOUND_GAME
+        self.sound_game_over = SOUND_GAME_OVER
     def execute(self):
         while self.running:
             if not self.playing:
                 self.show_menu()
-            print("entro al show")
     
     def run(self):
         # Game loop: events - update - draw
         self.restart_elements()
+        self.sound_game.play()
         while self.playing:
             self.events()
             self.update()
@@ -55,6 +59,7 @@ class Game:
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.sound_game.stop()
                 self.playing = False
     def close(self):
         self.playing=False
@@ -113,7 +118,7 @@ class Game:
             self.game_speed +=1
         
         text, text_rect = text_utils.get_score_element(self.points)
-        self.player.check_visibility(self.screen)
+        self.player.check_visibility(self.screen,self)
         pygame.draw.rect(self.screen,(255,255,255),text_rect)
         self.screen.blit(text, text_rect)
 
@@ -150,10 +155,12 @@ class Game:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if quit_button.checkForInput(menu_mouse_pos):
+                        self.sound_menu.stop()
                         self.show_main_menu()
             pygame.display.update()
 
     def show_main_menu(self):
+        self.sound_menu.play(3)
         while True:
             self.screen.blit(BG_MENU, (0, 0))
             menu_mouse_pos = pygame.mouse.get_pos()
@@ -173,16 +180,21 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if play_button.checkForInput(menu_mouse_pos): self.run()
-                    if options_button.checkForInput(menu_mouse_pos): self.show_scores()
+                    if play_button.checkForInput(menu_mouse_pos):
+                        self.sound_menu.stop()
+                        self.run()
+                    if options_button.checkForInput(menu_mouse_pos):
+                        self.show_scores()
                     if quit_button.checkForInput(menu_mouse_pos):
                         self.playing = False
                         self.running = False
+                        self.sound_menu.stop()
                         pygame.quit()
                         sys.exit()
             pygame.display.update()
     def show_sub_menu(self):
         pas = 0
+        self.sound_game_over.play()
         while True:
             self.screen.blit(BG_MENU, (0, 0))
             menu_mouse_pos = pygame.mouse.get_pos()

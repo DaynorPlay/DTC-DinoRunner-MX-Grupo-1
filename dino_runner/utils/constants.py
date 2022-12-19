@@ -3,6 +3,7 @@ import os
 
 # Global Constants
 TITLE = "Chrome Dino Runner"
+pygame.mixer.init()
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
@@ -83,3 +84,10 @@ SHIELD_TYPE = "shield"
 HAMMER_TYPE = "hammer"
 LIFE_TYPE = "life"
 HEART_COUNT = 5
+
+SOUND_JUMP = pygame.mixer.Sound(os.path.join(IMG_DIR, 'Sounds/jump.mp3'))
+SOUND_GAME = pygame.mixer.Sound(os.path.join(IMG_DIR, 'Sounds/game.mp3'))
+SOUND_STAR = pygame.mixer.Sound(os.path.join(IMG_DIR, 'Sounds/star.mp3'))
+SOUND_MENU = pygame.mixer.Sound(os.path.join(IMG_DIR, 'Sounds/menu.mp3'))
+SOUND_GAME_OVER = pygame.mixer.Sound(os.path.join(IMG_DIR, 'Sounds/game_over.wav'))
+#SOUND_OBSTACLE = pygame.mixer.Sound(os.path.join(IMG_DIR, 'Sounds/obstacle.mp3'))
