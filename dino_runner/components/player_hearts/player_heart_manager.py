@@ -14,3 +14,5 @@ class PlayerHeartManager:
             x_position += 30
     def reduce_heart(self):
         self.heart_count-=1
+    def increases_heart(self):
+        self.heart_count+=1

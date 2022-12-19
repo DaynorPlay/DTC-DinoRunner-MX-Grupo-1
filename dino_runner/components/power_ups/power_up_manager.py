@@ -1,21 +1,34 @@
 import random, pygame
 from dino_runner.components.power_ups.shield import Shield
+from dino_runner.components.power_ups.hammer import Hammer
+from dino_runner.components.power_ups.life import Life
+from dino_runner.components.power_ups.velocity import Velocity
 class PowerUpManager:
     def __init__(self):
         self.power_ups = []
         self.when_appers = 0
         self.points = 0
 
-    def update(self,points,game_speed, player):
+    def update(self,points,game_speed, player, game):
         self.generate_power_ups(points)
         for powerup in self.power_ups:
             powerup.update(game_speed,self.power_ups)
             if player.dino_rect.colliderect(powerup.rect):
-                powerup.start_time = pygame.time.get_ticks()
-                player.shield = True
-                player.type = powerup.type
-                powerup.start_time = pygame.time.get_ticks()
-                player.shield_time_up = powerup.start_time + (random.randint(5,8)*1000)
+                if powerup.type == "life":
+                    if game.player_heart_manager.heart_count<5: game.player_heart_manager.increases_heart()
+                else:
+                    powerup.start_time = pygame.time.get_ticks()
+                    if powerup.type == "shield": player.shield = True
+                    elif powerup.type == "hammer": player.hammer = True
+                    elif powerup.type == "velocity":
+                        player.velocity = True
+                        if player.poison: player.poison = False
+                    if player.velocity: player.type = "default"
+                    else: player.type = powerup.type #cambia el____________________________________________
+                    powerup.start_time = pygame.time.get_ticks()
+                    if player.shield: player.shield_time_up = powerup.start_time + (random.randint(5,8)*1000)
+                    elif player.hammer: player.hammer_time_up = powerup.start_time + (random.randint(5,8)*1000)
+                    elif player.velocity: player.velocity_time_up = powerup.start_time + (random.randint(5,8)*1000)
                 self.power_ups.remove(powerup)
 
     def draw(self, screen):
@@ -27,4 +40,9 @@ class PowerUpManager:
         if len(self.power_ups)==0:
             if self.when_appers==points:
                 self.when_appers = random.randint(self.when_appers + 150, self.when_appers + 500)
-                self.power_ups.append(Shield())
+                type_power_up = random.randint(0,4)
+                if type_power_up==5: self.power_ups.append(Shield())
+                elif type_power_up==1:  self.power_ups.append(Hammer())
+                elif type_power_up==2: self.power_ups.append(Life())
+                else: self.power_ups.append(Velocity())
+#---------------------------------------------

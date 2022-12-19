@@ -2,7 +2,7 @@ from dino_runner.components.obstacles.obstacle import Obstacle
 import random
 class Bird(Obstacle):
     def __init__(self, image):
-        super().__init__(image, 0)
+        super().__init__(image, 0,"bird")
         self.rect.y = 0
         self.step_fly = 0
 

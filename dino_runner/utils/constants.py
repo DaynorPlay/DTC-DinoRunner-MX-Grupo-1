@@ -7,9 +7,11 @@ SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
 IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
-
+FILE_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
+FILE_1 = os.path.join(IMG_DIR, "Files/arch1.txt")
+FILE_2 = os.path.join(IMG_DIR, "Files/arch2.txt")
 # Assets Constants
-ICON = pygame.image.load(os.path.join(IMG_DIR, "DinoWallpaper.png"))
+ICON = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoWallpaper.png"))
 
 RUNNING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1.png")),
@@ -22,8 +24,8 @@ RUNNING_SHIELD = [
 ]
 
 RUNNING_HAMMER = [
-    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck1Hammer.png")),
-    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1Hammer.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2Hammer1.png")),
 ]
 
 JUMPING = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJump.png"))
@@ -42,7 +44,7 @@ DUCKING_SHIELD = [
 
 DUCKING_HAMMER = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck1Hammer.png")),
-    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck2.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck2Hammer.png")),
 ]
 
 SMALL_CACTUS = [
@@ -64,11 +66,20 @@ BIRD = [
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
-
-BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
+VELOCITY = pygame.image.load(os.path.join(IMG_DIR, 'Other/velocity.png'))
+PILL_BLUE = [pygame.image.load(os.path.join(IMG_DIR, 'Other/bluePill.png'))]
+POISON = [pygame.image.load(os.path.join(IMG_DIR, 'Other/poison.png'))]
+BG = pygame.image.load(os.path.join(IMG_DIR, 'Menu/back9.png'))
+BG_MENU = pygame.image.load(os.path.join(IMG_DIR, 'Menu/back_menu.png'))
+PLAY_RECT = pygame.image.load(os.path.join(IMG_DIR, 'Menu/Play Rect.png'))
+OPCION_RECT = pygame.image.load(os.path.join(IMG_DIR, 'Menu/Options Rect.png'))
+QUIT_RECT=pygame.image.load(os.path.join(IMG_DIR, 'Menu/Quit Rect.png')) 
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
 DEFAULT_TYPE = "default"
+VELOCITY_TYPE = "velocity"
 SHIELD_TYPE = "shield"
+HAMMER_TYPE = "hammer"
+LIFE_TYPE = "life"
 HEART_COUNT = 5
